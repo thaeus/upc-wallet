@@ -71,7 +71,7 @@
         <com.alphawallet.app.ui.widget.entity.DappBrowserSwipeLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="522dp">
 
             <com.alphawallet.app.web3.Web3View
                 android:id="@+id/web3view"
@@ -79,5 +79,6 @@
                 android:layout_height="match_parent" />
 
         </com.alphawallet.app.ui.widget.entity.DappBrowserSwipeLayout>
+
     </FrameLayout>
 </RelativeLayout>

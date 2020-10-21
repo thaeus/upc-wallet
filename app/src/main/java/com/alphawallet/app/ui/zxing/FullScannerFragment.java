@@ -125,7 +125,7 @@ public class FullScannerFragment extends Fragment implements ZXingScannerView.Re
 
             if (qrResult.type == OTHER)
             {
-                pass = false;
+                pass = true;
             }
         }
         catch (Exception e)

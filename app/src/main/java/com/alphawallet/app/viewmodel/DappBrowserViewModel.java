@@ -222,6 +222,13 @@ public class DappBrowserViewModel extends BaseViewModel  {
                 Toast.LENGTH_SHORT).show();
     }
 
+
+    public void startUpcScan(Activity activity) {
+        Intent intent = new Intent(activity, QRScanningActivity.class);
+        activity.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);
+    }
+
+
     public void startScan(Activity activity) {
         Intent intent = new Intent(activity, QRScanningActivity.class);
         activity.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);

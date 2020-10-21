@@ -424,6 +424,7 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
     private void setupMenu(View baseView)
     {
         refresh = baseView.findViewById(R.id.refresh);
+        final MenuItem upc = toolbar.getMenu().findItem(R.id.action_scan_upc);
         final MenuItem reload = toolbar.getMenu().findItem(R.id.action_reload);
         final MenuItem share = toolbar.getMenu().findItem(R.id.action_share);
         final MenuItem scan = toolbar.getMenu().findItem(R.id.action_scan);
@@ -436,6 +437,12 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
             reloadPage();
             return true;
         });
+
+        if (upc != null) upc.setOnMenuItemClickListener(menuItem -> {
+            viewModel.startUpcScan(getActivity());
+            return true;
+        });
+
         if (share != null) share.setOnMenuItemClickListener(menuItem -> {
             if (web3.getUrl() != null && currentFragment != null && currentFragment.equals(DAPP_BROWSER)) {
                 if (getContext() != null) viewModel.share(getContext(), web3.getUrl());
@@ -1434,7 +1441,8 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
                         {
                             case ADDRESS:
                                 //ethereum address was scanned. In dapp browser what do we do? maybe populate an input field with address?
-                                copyToClipboard(result.getAddress());
+                                //copyToClipboard(result.getAddress());
+                                viewModel.showSend(getContext(), result);
                                 break;
                             case PAYMENT:
                                 //EIP681 payment request scanned, should go to send
@@ -1451,7 +1459,9 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
                                 loadUrlRemote(qrCode);
                                 break;
                             case OTHER:
-                                qrCode = null;
+                                //qrCode = null;
+                                copyToClipboard(result.getAddress());
+                                //viewModel.showSend(getContext(), result);
                                 break;
                         }
                     }

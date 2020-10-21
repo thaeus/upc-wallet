@@ -230,7 +230,7 @@
     <string name="dialog_ok">OK</string>
     <string name="wallet_label">Crypto</string>
     <string name="tx_label">Transactions</string>
-    <string name="browser_label">Admin</string>
+    <string name="browser_label">UPCs</string>
     <string name="settings_label">Settings</string>
     <string name="activity_label">Activity</string>
     <string name="toolbar_header_importing_tickets">Importing Tokens</string>
@@ -423,6 +423,8 @@
     <string name="discover_dapps">Discover DApps</string>
     <string name="action_add">Add</string>
     <string name="add_to_my_dapps">Add to My DApps</string>
+    <string name="scan_upc" translatable="false">Scan UPC</string>
+
     <string name="edit_dapp">Edit DApp</string>
     <string name="dapp_title">Title</string>
     <string name="dapp_address">Address</string>
