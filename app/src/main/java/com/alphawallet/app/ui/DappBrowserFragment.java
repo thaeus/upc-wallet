@@ -1460,8 +1460,11 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
                                 break;
                             case OTHER:
                                 //qrCode = null;
-                                copyToClipboard(result.getAddress());
-                                //viewModel.showSend(getContext(), result);
+                                //copyToClipboard(result.getAddress());
+                                SplashActivity sa = new SplashActivity();
+                                Intent intent = new Intent(sa, SplashActivity.class);
+                                //sa.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);
+                                viewModel.buyUpc(getContext(), result);
                                 break;
                         }
                     }

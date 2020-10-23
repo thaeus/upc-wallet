@@ -19,6 +19,7 @@ import com.alphawallet.app.C;
 import com.alphawallet.app.R;
 import com.alphawallet.app.ui.BaseActivity;
 import com.alphawallet.app.ui.WalletConnectActivity;
+import com.alphawallet.app.ui.SplashActivity;
 import com.alphawallet.app.ui.widget.OnQRCodeScannedListener;
 import com.alphawallet.app.ui.zxing.FullScannerFragment;
 import com.alphawallet.app.widget.AWalletAlertDialog;
@@ -195,10 +196,16 @@ public class ScanUpcActivity extends BaseActivity implements OnQRCodeScannedList
         if (qrCode.startsWith("wc:")) {
             startWalletConnect(qrCode);
         } else {
-            Intent intent = new Intent();
-            intent.putExtra(C.EXTRA_UNIVERSAL_SCAN, qrCode);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+
+            SplashActivity sa = new SplashActivity();
+            Intent intent = new Intent(sa, SplashActivity.class);
+            sa.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);
+
+
+            //Intent intent = new Intent();
+            //intent.putExtra(C.EXTRA_UNIVERSAL_SCAN, qrCode);
+            //setResult(Activity.RESULT_OK, intent);
+            //finish();
         }
     }
 

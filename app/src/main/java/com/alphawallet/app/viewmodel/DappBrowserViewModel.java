@@ -275,6 +275,15 @@ public class DappBrowserViewModel extends BaseViewModel  {
         ctx.startActivity(intent);
     }
 
+    public void buyUpc(Context ctx, QRResult result)
+    {
+        Intent intent = new Intent(ctx, MyAddressActivity.class);
+        intent.putExtra(WALLET, defaultWallet.getValue());
+        ctx.startActivity(intent);
+    }
+
+
+
     public void showMyAddress(Context ctx)
     {
         Intent intent = new Intent(ctx, MyAddressActivity.class);
