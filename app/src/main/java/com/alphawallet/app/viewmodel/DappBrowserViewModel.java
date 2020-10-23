@@ -14,20 +14,15 @@ import android.widget.Toast;
 import com.alphawallet.app.R;
 import com.alphawallet.app.entity.Operation;
 import com.alphawallet.app.entity.QRResult;
-import com.alphawallet.app.service.RealmManager;
 import com.alphawallet.app.service.TokensService;
 import com.alphawallet.app.ui.MyAddressActivity;
 import com.alphawallet.app.ui.SendActivity;
 import com.alphawallet.app.ui.WalletConnectActivity;
 import com.alphawallet.token.entity.Signable;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.alphawallet.app.C;
 import com.alphawallet.app.entity.DApp;
 import com.alphawallet.app.entity.DAppFunction;
 import com.alphawallet.app.entity.NetworkInfo;
-import com.alphawallet.app.entity.Operation;
-import com.alphawallet.app.entity.QRResult;
 import com.alphawallet.app.entity.SignAuthenticationCallback;
 import com.alphawallet.app.entity.Wallet;
 import com.alphawallet.app.entity.tokens.Token;
@@ -39,15 +34,12 @@ import com.alphawallet.app.router.ConfirmationRouter;
 import com.alphawallet.app.service.AssetDefinitionService;
 import com.alphawallet.app.service.GasService;
 import com.alphawallet.app.service.KeyService;
-import com.alphawallet.app.service.TokensService;
 import com.alphawallet.app.ui.AddEditDappActivity;
 import com.alphawallet.app.ui.HomeActivity;
+import com.alphawallet.app.ui.ScanUpcActivity;
 import com.alphawallet.app.ui.ImportTokenActivity;
-import com.alphawallet.app.ui.MyAddressActivity;
-import com.alphawallet.app.ui.SendActivity;
 import com.alphawallet.app.ui.zxing.QRScanningActivity;
 import com.alphawallet.app.util.DappBrowserUtils;
-import com.alphawallet.token.entity.EthereumMessage;
 import com.alphawallet.app.web3.entity.Web3Transaction;
 
 import java.util.List;
@@ -59,21 +51,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
-import com.alphawallet.app.interact.CreateTransactionInteract;
-import com.alphawallet.app.interact.FindDefaultNetworkInteract;
-import com.alphawallet.app.interact.GenericWalletInteract;
-import com.alphawallet.app.router.ConfirmationRouter;
-import com.alphawallet.app.service.AssetDefinitionService;
-import com.alphawallet.app.service.GasService;
-import com.alphawallet.app.service.KeyService;
-
-import org.web3j.abi.datatypes.Address;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static android.app.Activity.RESULT_OK;
 import static com.alphawallet.app.C.Key.WALLET;
 
 public class DappBrowserViewModel extends BaseViewModel  {
@@ -224,7 +201,7 @@ public class DappBrowserViewModel extends BaseViewModel  {
 
 
     public void startUpcScan(Activity activity) {
-        Intent intent = new Intent(activity, QRScanningActivity.class);
+        Intent intent = new Intent(activity, ScanUpcActivity.class);
         activity.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);
     }
 

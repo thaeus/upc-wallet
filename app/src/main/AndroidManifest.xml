@@ -305,6 +305,10 @@
             android:label="Sign Details" />
 
         <activity
+            android:name=".ui.ScanUpcActivity"
+            android:label="Buy Upc" />
+
+        <activity
             android:name=".ui.WalletConnectSessionActivity"
             android:label="WalletConnect Sessions" />
     </application>

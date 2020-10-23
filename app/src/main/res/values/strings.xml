@@ -389,6 +389,8 @@
     <string name="you_will_receive">you will receive</string>
     <string name="dust_value"><![CDATA[~0.00]]></string>
     <string name="action_scan_dapp">Scan QR Code</string>
+    <string name="action_scan_upc">Own some UPCs!</string>
+
     <string name="toast_invalid_code">Invalid Scan Result</string>
     <string name="address_found">Ethereum Address</string>
     <string name="is_address">Just scanned an Ethereum address. Do you want to try to load this as a Token?</string>
