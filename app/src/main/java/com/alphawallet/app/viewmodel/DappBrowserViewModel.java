@@ -16,6 +16,7 @@ import com.alphawallet.app.entity.Operation;
 import com.alphawallet.app.entity.QRResult;
 import com.alphawallet.app.service.TokensService;
 import com.alphawallet.app.ui.MyAddressActivity;
+import com.alphawallet.app.ui.BuyUpcActivity;
 import com.alphawallet.app.ui.SendActivity;
 import com.alphawallet.app.ui.WalletConnectActivity;
 import com.alphawallet.token.entity.Signable;
@@ -277,7 +278,7 @@ public class DappBrowserViewModel extends BaseViewModel  {
 
     public void buyUpc(Context ctx, QRResult result)
     {
-        Intent intent = new Intent(ctx, MyAddressActivity.class);
+        Intent intent = new Intent(ctx, BuyUpcActivity.class);
         intent.putExtra(WALLET, defaultWallet.getValue());
         ctx.startActivity(intent);
     }

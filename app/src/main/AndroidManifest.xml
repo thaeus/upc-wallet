@@ -306,6 +306,10 @@
 
         <activity
             android:name=".ui.ScanUpcActivity"
+            android:label="Scan Upc" />
+
+        <activity
+            android:name=".ui.BuyUpcActivity"
             android:label="Buy Upc" />
 
         <activity
