@@ -280,6 +280,8 @@ public class DappBrowserViewModel extends BaseViewModel  {
     {
         Intent intent = new Intent(ctx, BuyUpcActivity.class);
         intent.putExtra(WALLET, defaultWallet.getValue());
+        intent.putExtra("raw_upc", result.getAddress());
+
         ctx.startActivity(intent);
     }
 

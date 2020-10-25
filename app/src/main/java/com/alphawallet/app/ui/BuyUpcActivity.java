@@ -4,24 +4,43 @@ import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alphawallet.app.C;
 import com.alphawallet.app.R;
+import com.alphawallet.app.entity.QRResult;
+import com.alphawallet.app.entity.Wallet;
+import com.alphawallet.app.entity.tokens.Token;
+import com.alphawallet.app.entity.tokens.TokenInfo;
 import com.alphawallet.app.ui.BaseActivity;
 import com.alphawallet.app.ui.WalletConnectActivity;
 import com.alphawallet.app.ui.SplashActivity;
 import com.alphawallet.app.ui.widget.OnQRCodeScannedListener;
+import com.alphawallet.app.ui.widget.entity.AmountEntryItem;
+import com.alphawallet.app.ui.widget.entity.ENSHandler;
 import com.alphawallet.app.ui.zxing.FullScannerFragment;
+import com.alphawallet.app.ui.zxing.QRScanningActivity;
+import com.alphawallet.app.util.BalanceUtils;
+import com.alphawallet.app.util.KeyboardUtils;
+import com.alphawallet.app.util.Utils;
+import com.alphawallet.app.viewmodel.SendViewModel;
+import com.alphawallet.app.viewmodel.SendViewModelFactory;
 import com.alphawallet.app.widget.AWalletAlertDialog;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
@@ -30,7 +49,12 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
 import java.lang.ref.SoftReference;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,8 +62,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static com.alphawallet.token.tools.Convert.getEthString;
 
 public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListener {
+    private static final int BARCODE_READER_REQUEST_CODE = 1;
+    @Inject
+    SendViewModel viewModel;
+
+
 
     private static final int RC_HANDLE_CAMERA_PERM = 2;
     public static final int RC_HANDLE_IMAGE_PICKUP = 3;
@@ -53,6 +83,28 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     private TextView browseButton;
     private Disposable disposable;
     private AWalletAlertDialog dialog;
+    private ImageButton scanQrImageView;
+    private TextView tokenBalanceText;
+    private TextView tokenSymbolText;
+
+    private AutoCompleteTextView upcRaw;
+
+    private TextView pasteText;
+    private Button nextBtn;
+    private String currentAmount;
+    private QRResult currentResult;
+
+    private String myAddress;
+    private int decimals;
+    private String symbol;
+    private Wallet wallet;
+    private Token token;
+    private String contractAddress;
+    private ENSHandler ensHandler;
+    private Handler handler;
+    private TextView chainName;
+    private int currentChain;
+    private AmountEntryItem amountInput;
 
     @Override
     public void onCreate(Bundle state)
@@ -62,8 +114,8 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED)
         {
-            setContentView(R.layout.activity_send);
-            //initView();
+            setContentView(R.layout.activity_buy_upc);
+            initView();
         }
         else
         {
@@ -71,61 +123,113 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
         }
     }
 
-    private void initView()
-    {
-        toolbar();
-        enableDisplayHomeAsUp();
-        setTitle(getString(R.string.action_scan_upc));
+    private void initView() {
 
-        flashButton = findViewById(R.id.flash_button);
-        myAddressButton = findViewById(R.id.my_address_button);
-        browseButton = findViewById(R.id.browse_button);
+        upcRaw = findViewById(R.id.raw_upc);
 
-        fullScannerFragment = (FullScannerFragment) getSupportFragmentManager().findFragmentById(R.id.scanner_fragment);
-
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(C.EXTRA_UNIVERSAL_SCAN))
-        {
-            Objects.requireNonNull(fullScannerFragment).registerListener(this);
+        if (getIntent() != null) {
+            upcRaw.setText(getIntent().getStringExtra("raw_upc"));
         }
 
-        flashButton.setOnClickListener(view -> {
-            try
-            {
-                boolean isFlashOn = fullScannerFragment.toggleFlash();
 
-                if (isFlashOn)
-                {
-                    flashButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_flash_off, 0,0);
-                }
-                else
-                {
-                    flashButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_flash, 0,0);
-                }
-            }
-            catch (Exception e)
-            {
-                onError(e);
-            }
+
+        nextBtn = findViewById(R.id.button_next);
+        nextBtn.setOnClickListener(v -> {
+            onNext();
         });
 
-        myAddressButton.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.putExtra(C.EXTRA_ACTION_NAME, C.ACTION_MY_ADDRESS_SCREEN);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+        scanQrImageView = findViewById(R.id.img_scan_qr);
+        scanQrImageView.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ScanUpcActivity.class);
+            startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
         });
+    }
 
-        browseButton.setOnClickListener(view -> {
-            if (ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            {
-                String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-                requestPermissions(permissions, RC_HANDLE_IMAGE_PICKUP);
-            }
-            else
-            {
-                pickImage();
-            }
-        });
+
+
+    private boolean isBalanceZero(String balance)
+    {
+        try
+        {
+            /*
+            While checking 0.00 value which is passed while using Fiat currency,
+            BigDecimal.ZERO fails to send accurate value.
+            Using .doubleValue(), converts to actual amount and compare without scale.
+             */
+            BigDecimal amount = new BigDecimal(balance);
+            return BigDecimal.ZERO.doubleValue() == amount.doubleValue();
+        }
+        catch (Exception e)
+        {
+            return true;
+        }
+    }
+
+    private boolean isBalanceEnough(String eth)
+    {
+        try
+        {
+            //Needs to take into account decimal of token
+            int decimals = (token != null && token.tokenInfo != null) ? token.tokenInfo.decimals : 18;
+            BigDecimal amount = new BigDecimal(BalanceUtils.baseToSubunit(eth, decimals));
+            return (token.balance.subtract(amount).compareTo(BigDecimal.ZERO) >= 0);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    private void setupTokenContent() {
+        tokenBalanceText = findViewById(R.id.balance_eth);
+        tokenSymbolText = findViewById(R.id.symbol);
+        chainName = findViewById(R.id.text_chain_name);
+
+        String symbol = token.getSymbol();
+
+        tokenSymbolText.setText(TextUtils.isEmpty(token.tokenInfo.name)
+                ? symbol
+                : symbol.length() > 0 ? getString(R.string.token_name, token.tokenInfo.name, symbol)
+                : token.tokenInfo.name);
+
+        TokenInfo tokenInfo = token.tokenInfo;
+        BigDecimal decimalDivisor = new BigDecimal(Math.pow(10, tokenInfo.decimals));
+        BigDecimal ethBalance = tokenInfo.decimals > 0
+                ? token.balance.divide(decimalDivisor, Token.TOKEN_BALANCE_PRECISION, RoundingMode.DOWN).stripTrailingZeros() : token.balance;
+        String value = getEthString(ethBalance.doubleValue());
+        tokenBalanceText.setText(value);
+
+        tokenBalanceText.setVisibility(View.VISIBLE);
+        if (token != null)
+        {
+            Utils.setChainColour(chainName, token.tokenInfo.chainId);
+            chainName.setText(viewModel.getChainName(token.tokenInfo.chainId));
+            viewModel.setChainId(token.tokenInfo.chainId);
+        }
+    }
+
+
+    private void onNext() {
+        KeyboardUtils.hideKeyboard(getCurrentFocus());
+        boolean isValid = amountInput.checkValidAmount();
+
+        if (isBalanceZero(currentAmount)) {
+            amountInput.setError(R.string.error_zero_balance);
+            isValid = false;
+        }
+        if (!isBalanceEnough(currentAmount)) {
+            amountInput.setError(R.string.error_insufficient_funds);
+            isValid = false;
+        }
+
+        String to = ensHandler.getAddressFromEditView();
+        if (to == null) return;
+
+        if (isValid) {
+            BigInteger amountInSubunits = BalanceUtils.baseToSubunit(currentAmount, decimals);
+            boolean sendingTokens = !token.isEthereum();
+            viewModel.openConfirmation(this, to, amountInSubunits, token.getAddress(), token.tokenInfo.decimals, token.getSymbol(), sendingTokens, ensHandler.getEnsName(), currentChain);
+        }
     }
 
     private void pickImage()

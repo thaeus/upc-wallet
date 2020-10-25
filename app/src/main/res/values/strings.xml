@@ -327,6 +327,7 @@
     <string name="action_contract_info">Contract Info</string>
     <string name="contract_address">Contract Address</string>
     <string name="input_address">Ethereum address or ENS name</string>
+    <string name="scan_something">Scan something :) :) :)</string>
     <string name="ticket_range_expired">Magiclink Expired</string>
     <string name="ticket_not_valid">Invalid Token</string>
     <string name="ticket_not_valid_body">No valid contract at this address on this network. The contract could have been terminated or it may be on a different network. Try changing to \'Ropsten (Test)\'.</string>
@@ -345,6 +346,7 @@
     <string name="toolbar_header_browser">DApp Browser</string>
     <string name="message_to_sign">Message</string>
     <string name="signer_address">Address</string>
+    <string name="raw_upc">Raw UPC</string>
     <string name="requester_url">Requester</string>
     <string name="dialog_title_sign_message">Sign Message</string>
     <string name="dialog_title_sign_typed_message">Sign Typed Message</string>
@@ -371,6 +373,7 @@
     <string name="check_feemaster">Checking for gas free service</string>
     <string name="erc20_details">ERC20 Details</string>
     <string name="title_send_activity">Send</string>
+    <string name="title_buy_upc_activity" translatable="false">Buy UPC</string>
     <string name="available">Available</string>
     <string name="usd_label">US$</string>
     <string name="recent_transactions">Recent Transactions</string>
