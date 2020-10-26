@@ -484,7 +484,7 @@
                 android:background="@drawable/selector_round_button"
                 android:fontFamily="@font/font_semibold"
                 android:gravity="center"
-                android:text="@string/action_send"
+                android:text="SENAAAA"
                 android:textAllCaps="false"
                 android:textColor="@color/button_text_color"
                 android:textSize="16sp" />
