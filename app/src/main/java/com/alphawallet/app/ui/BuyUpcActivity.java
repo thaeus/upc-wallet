@@ -301,9 +301,9 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
             startWalletConnect(qrCode);
         } else {
 
-            SplashActivity sa = new SplashActivity();
-            Intent intent = new Intent(sa, SplashActivity.class);
-            sa.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);
+            //SplashActivity sa = new SplashActivity();
+            //Intent intent = new Intent(sa, SplashActivity.class);
+            //sa.startActivityForResult(intent, HomeActivity.DAPP_BARCODE_READER_REQUEST_CODE);
 
 
             //Intent intent = new Intent();

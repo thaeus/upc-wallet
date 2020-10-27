@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.alphawallet.app.R;
 import com.alphawallet.app.entity.Operation;
 import com.alphawallet.app.entity.QRResult;
+import com.alphawallet.app.repository.TokenRepository;
 import com.alphawallet.app.service.TokensService;
 import com.alphawallet.app.ui.MyAddressActivity;
 import com.alphawallet.app.ui.BuyUpcActivity;
@@ -21,6 +22,8 @@ import com.alphawallet.app.ui.SendActivity;
 import com.alphawallet.app.ui.WalletConnectActivity;
 import com.alphawallet.token.entity.Signable;
 import com.alphawallet.app.C;
+
+import com.alphawallet.app.contracts.UPCGoldBank;
 import com.alphawallet.app.entity.DApp;
 import com.alphawallet.app.entity.DAppFunction;
 import com.alphawallet.app.entity.NetworkInfo;
@@ -43,6 +46,12 @@ import com.alphawallet.app.ui.zxing.QRScanningActivity;
 import com.alphawallet.app.util.DappBrowserUtils;
 import com.alphawallet.app.web3.entity.Web3Transaction;
 
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.RemoteFunctionCall;
+import org.web3j.tx.ClientTransactionManager;
+import org.web3j.tx.gas.StaticGasProvider;
+
+import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -51,8 +60,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
+import java8.util.concurrent.CompletableFuture;
 
 import static com.alphawallet.app.C.Key.WALLET;
+import static com.alphawallet.app.repository.EthereumNetworkBase.XDAI_ID;
 
 public class DappBrowserViewModel extends BaseViewModel  {
     private final MutableLiveData<NetworkInfo> defaultNetwork = new MutableLiveData<>();
@@ -278,10 +289,26 @@ public class DappBrowserViewModel extends BaseViewModel  {
 
     public void buyUpc(Context ctx, QRResult result)
     {
+        String address = defaultWallet.getValue().address;
         Intent intent = new Intent(ctx, BuyUpcActivity.class);
         intent.putExtra(WALLET, defaultWallet.getValue());
         intent.putExtra("raw_upc", result.getAddress());
+        Web3j web3j = TokenRepository.getWeb3jService(XDAI_ID);
+        ClientTransactionManager ctm = new ClientTransactionManager(web3j, address);
 
+        BigInteger gasPrice = BigInteger.valueOf(12122960);
+        BigInteger gasLimit = BigInteger.valueOf(12122960);
+        BigInteger balanceDec;
+        StaticGasProvider gasProvider = new StaticGasProvider(gasPrice,gasLimit);
+        UPCGoldBank bank = UPCGoldBank.load("0xbE0e4C218a78a80b50aeE895a1D99C1D7a842580", web3j, ctm, gasProvider );
+        String response = new String("hi");
+        try {
+            CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
+            balanceDec = balance.get();
+            balanceDec = balanceDec;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ctx.startActivity(intent);
     }
 
