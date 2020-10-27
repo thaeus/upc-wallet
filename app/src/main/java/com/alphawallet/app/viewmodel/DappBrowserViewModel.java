@@ -291,25 +291,27 @@ public class DappBrowserViewModel extends BaseViewModel  {
     {
         String address = defaultWallet.getValue().address;
         Intent intent = new Intent(ctx, BuyUpcActivity.class);
-        intent.putExtra(WALLET, defaultWallet.getValue());
-        intent.putExtra("raw_upc", result.getAddress());
+
         Web3j web3j = TokenRepository.getWeb3jService(XDAI_ID);
         ClientTransactionManager ctm = new ClientTransactionManager(web3j, address);
 
         BigInteger gasPrice = BigInteger.valueOf(12122960);
         BigInteger gasLimit = BigInteger.valueOf(12122960);
-        BigInteger balanceDec;
+        BigInteger totalBalance = BigInteger.valueOf(777);
+        String bla = "bla";
         StaticGasProvider gasProvider = new StaticGasProvider(gasPrice,gasLimit);
         UPCGoldBank bank = UPCGoldBank.load("0xbE0e4C218a78a80b50aeE895a1D99C1D7a842580", web3j, ctm, gasProvider );
-        String response = new String("hi");
         try {
             CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
-            balanceDec = balance.get();
-            balanceDec = balanceDec;
+            totalBalance = balance.get();
+            intent.putExtra(WALLET, defaultWallet.getValue());
+            intent.putExtra("raw_upc", result.getAddress());
+            intent.putExtra("total_balance", totalBalance.toString());
+            ctx.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ctx.startActivity(intent);
+
     }
 
 
