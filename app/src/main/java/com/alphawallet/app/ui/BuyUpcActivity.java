@@ -88,7 +88,7 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     private TextView tokenSymbolText;
 
     private AutoCompleteTextView upcRaw;
-    private AutoCompleteTextView totalBalance;
+    private TextView totalBalance;
 
 
     private TextView pasteText;
@@ -128,14 +128,12 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     private void initView() {
 
         upcRaw = findViewById(R.id.raw_upc);
-        //totalBalance = findViewById(R.id.layout_amount);
+        totalBalance = findViewById(R.id.total_staked);
 
         if (getIntent() != null) {
-            upcRaw.setText(getIntent().getStringExtra("total_balance"));
-            //totalBalance.setText(getIntent().getStringExtra("total_balance"));
+            upcRaw.setText(getIntent().getStringExtra("upc_raw"));
+            totalBalance.setText(getIntent().getStringExtra("total_balance"));
         }
-
-
 
         nextBtn = findViewById(R.id.button_next);
         nextBtn.setOnClickListener(v -> {

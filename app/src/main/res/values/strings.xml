@@ -27,6 +27,8 @@
     <string name="action_create_new_account">Create a New Wallet</string>
     <string name="unknown_error">An error has occurred.</string>
     <string name="no_tokens">No tokens found.</string>
+    <string name="total_staked">Total Staked.</string>
+
 
     <!-- Titles -->
     <string name="title_my_address">My Address</string>

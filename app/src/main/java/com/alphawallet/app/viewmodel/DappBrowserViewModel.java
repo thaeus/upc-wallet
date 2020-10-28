@@ -294,13 +294,13 @@ public class DappBrowserViewModel extends BaseViewModel  {
 
         Web3j web3j = TokenRepository.getWeb3jService(XDAI_ID);
         ClientTransactionManager ctm = new ClientTransactionManager(web3j, address);
+        String contractAddress = "0xbE0e4C218a78a80b50aeE895a1D99C1D7a842580";
 
         BigInteger gasPrice = BigInteger.valueOf(12122960);
         BigInteger gasLimit = BigInteger.valueOf(12122960);
-        BigInteger totalBalance = BigInteger.valueOf(777);
-        String bla = "bla";
+        BigInteger totalBalance = BigInteger.valueOf(0);
         StaticGasProvider gasProvider = new StaticGasProvider(gasPrice,gasLimit);
-        UPCGoldBank bank = UPCGoldBank.load("0xbE0e4C218a78a80b50aeE895a1D99C1D7a842580", web3j, ctm, gasProvider );
+        UPCGoldBank bank = UPCGoldBank.load(contractAddress, web3j, ctm, gasProvider );
         try {
             CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
             totalBalance = balance.get();
@@ -311,10 +311,7 @@ public class DappBrowserViewModel extends BaseViewModel  {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
-
 
     public void showMyAddress(Context ctx)
     {
