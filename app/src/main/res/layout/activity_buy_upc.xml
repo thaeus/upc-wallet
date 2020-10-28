@@ -147,6 +147,7 @@
                     android:fontFamily="@font/font_light"
                     android:textColor="@color/text_dark_gray"
                     android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/total_balance"
                     android:layout_width="wrap_content"
@@ -154,6 +155,24 @@
                     android:fontFamily="@font/font_light"
                     android:textColor="@color/text_dark_gray"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/current_staker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_light"
+                    android:textColor="@color/text_dark_gray"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/amount_staked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_light"
+                    android:textColor="@color/text_dark_gray"
+                    android:textSize="16sp" />
+
+
             </LinearLayout>
         </ScrollView>
 

@@ -46,12 +46,15 @@ import com.alphawallet.app.ui.zxing.QRScanningActivity;
 import com.alphawallet.app.util.DappBrowserUtils;
 import com.alphawallet.app.web3.entity.Web3Transaction;
 
+import org.web3j.abi.datatypes.generated.Bytes32;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteFunctionCall;
+import org.web3j.tuples.generated.Tuple4;
 import org.web3j.tx.ClientTransactionManager;
 import org.web3j.tx.gas.StaticGasProvider;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -296,6 +299,8 @@ public class DappBrowserViewModel extends BaseViewModel  {
         ClientTransactionManager ctm = new ClientTransactionManager(web3j, address);
         String contractAddress = "0xbE0e4C218a78a80b50aeE895a1D99C1D7a842580";
 
+
+        //TODO: change gasPrice and gasLimit to be dynamic values
         BigInteger gasPrice = BigInteger.valueOf(12122960);
         BigInteger gasLimit = BigInteger.valueOf(12122960);
         BigInteger totalBalance = BigInteger.valueOf(777);
@@ -306,11 +311,26 @@ public class DappBrowserViewModel extends BaseViewModel  {
             CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
             totalBalance = balance.get();
             String addy = result.getAddress();
+
+            CompletableFuture<Tuple4<String, BigInteger, Boolean, byte[]>> evictInfo = bank.getCostToEvict(addy).sendAsync();
+
+            Tuple4<String, BigInteger, Boolean, byte[]> evictResult = evictInfo.get();
+
+            String currentStaker = evictResult.component1();
+            String amountStaked = evictResult.component2().toString();
+            String isOwned = evictResult.component3().toString();
+            byte[] upcHashBytes = evictResult.component4();
+
+            String upcHashString = new String(upcHashBytes).toString();
+
             scanIntent.putExtra(WALLET, defaultWallet.getValue());
-            //intent.putExtra("raw_upc", "test");
-            String combined = totalBalance.toString() + ';' + addy;
             scanIntent.putExtra("upc_raw",addy);
             scanIntent.putExtra("total_balance",totalBalance.toString());
+            scanIntent.putExtra("current_staker", currentStaker);
+            scanIntent.putExtra("amount_staked", amountStaked);
+            scanIntent.putExtra("is_owned", isOwned);
+            scanIntent.putExtra("upc_hash", upcHashString);
+
 
             ctx.startActivity(scanIntent);
         } catch (Exception e) {

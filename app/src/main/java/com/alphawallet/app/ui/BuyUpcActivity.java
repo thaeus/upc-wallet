@@ -79,7 +79,8 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
 
     private TextView upcRaw;
     private TextView totalBalance;
-
+    private TextView currentStaker;
+    private TextView amountStaked;
 
     private TextView pasteText;
     private Button nextBtn;
@@ -110,14 +111,26 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     private void initView() {
         String upcString;
         String totalBalanceString;
+        String currentStakerString;
+        String amountStakedString;
+
         totalBalance = findViewById(R.id.total_balance);
         upcRaw = findViewById(R.id.upc_raw);
+        currentStaker = findViewById(R.id.current_staker);
+        amountStaked = findViewById(R.id.amount_staked);
+
 
         if (getIntent() != null) {
              upcString = getIntent().getStringExtra("upc_raw");
              totalBalanceString = getIntent().getStringExtra("total_balance");
+             currentStakerString = getIntent().getStringExtra("current_staker");
+             amountStakedString  = getIntent().getStringExtra("amount_staked");
+
              upcRaw.setText(upcString);
              totalBalance.setText(totalBalanceString);
+             currentStaker.setText(currentStakerString);
+             amountStaked.setText(amountStakedString);
+
         }
 
         nextBtn = findViewById(R.id.button_next);
