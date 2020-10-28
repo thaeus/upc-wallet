@@ -298,16 +298,21 @@ public class DappBrowserViewModel extends BaseViewModel  {
 
         BigInteger gasPrice = BigInteger.valueOf(12122960);
         BigInteger gasLimit = BigInteger.valueOf(12122960);
-        BigInteger totalBalance = BigInteger.valueOf(0);
+        BigInteger totalBalance = BigInteger.valueOf(777);
         StaticGasProvider gasProvider = new StaticGasProvider(gasPrice,gasLimit);
         UPCGoldBank bank = UPCGoldBank.load(contractAddress, web3j, ctm, gasProvider );
         try {
+            Intent scanIntent = new Intent(ctx, BuyUpcActivity.class);
             CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
             totalBalance = balance.get();
-            intent.putExtra(WALLET, defaultWallet.getValue());
-            intent.putExtra("raw_upc", result.getAddress());
-            intent.putExtra("total_balance", totalBalance.toString());
-            ctx.startActivity(intent);
+            String addy = result.getAddress();
+            scanIntent.putExtra(WALLET, defaultWallet.getValue());
+            //intent.putExtra("raw_upc", "test");
+            String combined = totalBalance.toString() + ';' + addy;
+            scanIntent.putExtra("upc_raw",addy);
+            scanIntent.putExtra("total_balance",totalBalance.toString());
+
+            ctx.startActivity(scanIntent);
         } catch (Exception e) {
             e.printStackTrace();
         }

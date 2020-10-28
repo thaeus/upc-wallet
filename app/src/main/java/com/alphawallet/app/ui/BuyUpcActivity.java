@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,30 +16,23 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.alphawallet.app.C;
 import com.alphawallet.app.R;
 import com.alphawallet.app.entity.QRResult;
 import com.alphawallet.app.entity.Wallet;
 import com.alphawallet.app.entity.tokens.Token;
 import com.alphawallet.app.entity.tokens.TokenInfo;
-import com.alphawallet.app.ui.BaseActivity;
-import com.alphawallet.app.ui.WalletConnectActivity;
-import com.alphawallet.app.ui.SplashActivity;
 import com.alphawallet.app.ui.widget.OnQRCodeScannedListener;
 import com.alphawallet.app.ui.widget.entity.AmountEntryItem;
 import com.alphawallet.app.ui.widget.entity.ENSHandler;
 import com.alphawallet.app.ui.zxing.FullScannerFragment;
-import com.alphawallet.app.ui.zxing.QRScanningActivity;
 import com.alphawallet.app.util.BalanceUtils;
 import com.alphawallet.app.util.KeyboardUtils;
 import com.alphawallet.app.util.Utils;
 import com.alphawallet.app.viewmodel.SendViewModel;
-import com.alphawallet.app.viewmodel.SendViewModelFactory;
 import com.alphawallet.app.widget.AWalletAlertDialog;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
@@ -52,7 +44,6 @@ import java.lang.ref.SoftReference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -61,7 +52,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static com.alphawallet.token.tools.Convert.getEthString;
 
 public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListener {
@@ -87,7 +77,7 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     private TextView tokenBalanceText;
     private TextView tokenSymbolText;
 
-    private AutoCompleteTextView upcRaw;
+    private TextView upcRaw;
     private TextView totalBalance;
 
 
@@ -112,41 +102,29 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     public void onCreate(Bundle state)
     {
         super.onCreate(state);
+        setContentView(R.layout.activity_buy_upc);
+        initView();
 
-        int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (rc == PackageManager.PERMISSION_GRANTED)
-        {
-            setContentView(R.layout.activity_buy_upc);
-            initView();
-        }
-        else
-        {
-            requestCameraPermission();
-        }
     }
 
     private void initView() {
-
-        upcRaw = findViewById(R.id.raw_upc);
-        totalBalance = findViewById(R.id.total_staked);
+        String upcString;
+        String totalBalanceString;
+        totalBalance = findViewById(R.id.total_balance);
+        upcRaw = findViewById(R.id.upc_raw);
 
         if (getIntent() != null) {
-            upcRaw.setText(getIntent().getStringExtra("upc_raw"));
-            totalBalance.setText(getIntent().getStringExtra("total_balance"));
+             upcString = getIntent().getStringExtra("upc_raw");
+             totalBalanceString = getIntent().getStringExtra("total_balance");
+             upcRaw.setText(upcString);
+             totalBalance.setText(totalBalanceString);
         }
 
         nextBtn = findViewById(R.id.button_next);
         nextBtn.setOnClickListener(v -> {
             onNext();
         });
-
-        scanQrImageView = findViewById(R.id.img_scan_qr);
-        scanQrImageView.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ScanUpcActivity.class);
-            startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
-        });
     }
-
 
 
     private boolean isBalanceZero(String balance)

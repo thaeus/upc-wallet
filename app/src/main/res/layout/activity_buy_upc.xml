@@ -137,16 +137,21 @@
                     android:paddingLeft="25dp"
                     android:paddingRight="20dp">
 
-                    <include layout="@layout/item_input_buy_upc" />
-
                     <include layout="@layout/item_input_amount" />
                 </LinearLayout>
+
                 <TextView
-                    android:id="@+id/total_staked"
+                    android:id="@+id/upc_raw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/font_light"
-                    android:text="@string/total_staked"
+                    android:textColor="@color/text_dark_gray"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/total_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_light"
                     android:textColor="@color/text_dark_gray"
                     android:textSize="16sp" />
             </LinearLayout>
