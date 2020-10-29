@@ -132,9 +132,9 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
             String addyBegin = currentStakerString.substring(0,10);
             String addyEnd =   currentStakerString.substring(currentStakerString.length()-5);
             String addyFinal = addyBegin + "..." + addyEnd;
-
+            String amountString = Convert.fromWei(amountStakedString,Convert.Unit.ETHER).toString() + "(xDAI)";
             currentStaker.setText(addyFinal);
-            amountStaked.setText(Convert.fromWei(amountStakedString,Convert.Unit.ETHER).toString());
+            amountStaked.setText(amountString);
 
         }
 

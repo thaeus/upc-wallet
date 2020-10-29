@@ -348,7 +348,10 @@
     <string name="toolbar_header_browser">DApp Browser</string>
     <string name="message_to_sign">Message</string>
     <string name="signer_address">Address</string>
-    <string name="raw_upc">Raw UPC</string>
+    <string name="raw_upc">Raw UPC:</string>
+    <string name="lease_holder">Owner:</string>
+    <string name="amount_staked">Amount Staked:</string>
+
     <string name="requester_url">Requester</string>
     <string name="dialog_title_sign_message">Sign Message</string>
     <string name="dialog_title_sign_typed_message">Sign Typed Message</string>
