@@ -122,13 +122,13 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
 
 
         if (getIntent() != null) {
-             upcString = getIntent().getStringExtra("upc_raw");
-             //totalBalanceString = getIntent().getStringExtra("total_balance");
-             currentStakerString = getIntent().getStringExtra("current_staker");
-             amountStakedString  = getIntent().getStringExtra("amount_staked");
+            upcString = getIntent().getStringExtra("upc_raw");
+            //totalBalanceString = getIntent().getStringExtra("total_balance");
+            currentStakerString = getIntent().getStringExtra("current_staker");
+            amountStakedString  = getIntent().getStringExtra("amount_staked");
 
-             upcRaw.setText(upcString);
-             //totalBalance.setText(totalBalanceString);
+            upcRaw.setText(upcString);
+            //totalBalance.setText(totalBalanceString);
             String addyBegin = currentStakerString.substring(0,10);
             String addyEnd =   currentStakerString.substring(currentStakerString.length()-5);
             String addyFinal = addyBegin + "..." + addyEnd;
