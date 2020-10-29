@@ -20,11 +20,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.alphawallet.app.C;
 import com.alphawallet.app.R;
 import com.alphawallet.app.entity.QRResult;
 import com.alphawallet.app.entity.Wallet;
 import com.alphawallet.app.entity.tokens.Token;
 import com.alphawallet.app.entity.tokens.TokenInfo;
+import com.alphawallet.app.repository.TokenRepositoryType;
 import com.alphawallet.app.ui.widget.OnQRCodeScannedListener;
 import com.alphawallet.app.ui.widget.entity.AmountEntryItem;
 import com.alphawallet.app.ui.widget.entity.ENSHandler;
@@ -54,6 +56,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.alphawallet.app.C.Key.WALLET;
 import static com.alphawallet.token.tools.Convert.getEthString;
 
 public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListener {
@@ -67,6 +70,7 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
     public static final int RC_HANDLE_IMAGE_PICKUP = 3;
 
     public static final int DENY_PERMISSION = 1;
+    protected TokenRepositoryType tokenRepository;
 
     private FullScannerFragment fullScannerFragment;
 
@@ -107,6 +111,28 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
         super.onCreate(state);
         setContentView(R.layout.activity_buy_upc);
         initView();
+/*
+        //see how the send page accepts these parameters from wherever it is called
+        handler = new Handler();
+
+        contractAddress = getIntent().getStringExtra(C.EXTRA_CONTRACT_ADDRESS);
+
+        decimals = getIntent().getIntExtra(C.EXTRA_DECIMALS, C.ETHER_DECIMALS);
+        symbol = getIntent().getStringExtra(C.EXTRA_SYMBOL);
+        symbol = symbol == null ? C.ETH_SYMBOL : symbol;
+        wallet = getIntent().getParcelableExtra(WALLET);
+        token = getIntent().getParcelableExtra(C.EXTRA_TOKEN_ID);
+        QRResult result = getIntent().getParcelableExtra(C.EXTRA_AMOUNT);
+        currentChain = getIntent().getIntExtra(C.EXTRA_NETWORKID, 1);
+        myAddress = wallet.address;
+
+        setupTokenContent();
+
+        if (token != null)
+        {
+            amountInput = new AmountEntryItem(this, tokenRepository, token); //ticker is used automatically now
+        }
+*/
 
     }
 
@@ -133,6 +159,11 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
             String addyEnd =   currentStakerString.substring(currentStakerString.length()-5);
             String addyFinal = addyBegin + "..." + addyEnd;
             String amountString = Convert.fromWei(amountStakedString,Convert.Unit.ETHER).toString() + "(xDAI)";
+
+            if(addyFinal.equals("0x00000000...00000") ){
+                addyFinal = "Vacant";
+            }
+
             currentStaker.setText(addyFinal);
             amountStaked.setText(amountString);
 
