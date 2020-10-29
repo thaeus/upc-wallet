@@ -308,8 +308,8 @@ public class DappBrowserViewModel extends BaseViewModel  {
         UPCGoldBank bank = UPCGoldBank.load(contractAddress, web3j, ctm, gasProvider );
         try {
             Intent scanIntent = new Intent(ctx, BuyUpcActivity.class);
-            CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
-            totalBalance = balance.get();
+            //CompletableFuture<BigInteger> balance = bank.getBalance().sendAsync();
+            //totalBalance = balance.get();
             String addy = result.getAddress();
 
             CompletableFuture<Tuple4<String, BigInteger, Boolean, byte[]>> evictInfo = bank.getCostToEvict(addy).sendAsync();
@@ -325,7 +325,6 @@ public class DappBrowserViewModel extends BaseViewModel  {
 
             scanIntent.putExtra(WALLET, defaultWallet.getValue());
             scanIntent.putExtra("upc_raw",addy);
-            scanIntent.putExtra("total_balance",totalBalance.toString());
             scanIntent.putExtra("current_staker", currentStaker);
             scanIntent.putExtra("amount_staked", amountStaked);
             scanIntent.putExtra("is_owned", isOwned);

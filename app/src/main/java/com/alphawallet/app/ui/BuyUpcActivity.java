@@ -40,6 +40,8 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
+import org.web3j.utils.Convert;
+
 import java.lang.ref.SoftReference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -114,7 +116,6 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
         String currentStakerString;
         String amountStakedString;
 
-        totalBalance = findViewById(R.id.total_balance);
         upcRaw = findViewById(R.id.upc_raw);
         currentStaker = findViewById(R.id.current_staker);
         amountStaked = findViewById(R.id.amount_staked);
@@ -122,14 +123,18 @@ public class BuyUpcActivity extends BaseActivity implements OnQRCodeScannedListe
 
         if (getIntent() != null) {
              upcString = getIntent().getStringExtra("upc_raw");
-             totalBalanceString = getIntent().getStringExtra("total_balance");
+             //totalBalanceString = getIntent().getStringExtra("total_balance");
              currentStakerString = getIntent().getStringExtra("current_staker");
              amountStakedString  = getIntent().getStringExtra("amount_staked");
 
              upcRaw.setText(upcString);
-             totalBalance.setText(totalBalanceString);
-             currentStaker.setText(currentStakerString);
-             amountStaked.setText(amountStakedString);
+             //totalBalance.setText(totalBalanceString);
+            String addyBegin = currentStakerString.substring(0,10);
+            String addyEnd =   currentStakerString.substring(currentStakerString.length()-5);
+            String addyFinal = addyBegin + "..." + addyEnd;
+
+            currentStaker.setText(addyFinal);
+            amountStaked.setText(Convert.fromWei(amountStakedString,Convert.Unit.ETHER).toString());
 
         }
 
