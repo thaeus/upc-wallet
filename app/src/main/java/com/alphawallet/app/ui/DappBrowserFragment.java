@@ -40,6 +40,7 @@ import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -185,6 +186,8 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
     private Toolbar toolbar;
     private ImageView back;
     private ImageView next;
+    private Button scanUpc;
+
     private ImageView clear;
     private ImageView refresh;
     private TextView currentNetwork;
@@ -516,6 +519,13 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
         clear.setOnClickListener(v -> {
             clearAddressBar();
         });
+
+        scanUpc = view.findViewById(R.id.scan_upc);
+        scanUpc.setOnClickListener(v -> {
+            viewModel.startUpcScan(getActivity());
+        });
+
+
 
         currentNetworkClicker = view.findViewById(R.id.network_holder);
         currentNetworkClicker.setOnClickListener(v -> selectNetwork());
