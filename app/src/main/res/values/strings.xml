@@ -232,7 +232,7 @@
     <string name="dialog_ok">OK</string>
     <string name="wallet_label">Crypto</string>
     <string name="tx_label">Transactions</string>
-    <string name="browser_label">UPCs</string>
+    <string name="browser_label">Scanner</string>
     <string name="settings_label">Settings</string>
     <string name="activity_label">Activity</string>
     <string name="toolbar_header_importing_tickets">Importing Tokens</string>
@@ -349,9 +349,10 @@
     <string name="message_to_sign">Message</string>
     <string name="signer_address">Address</string>
     <string name="raw_upc">UPC:</string>
-    <string name="lease_holder">Owner:</string>
-    <string name="amount_staked">Balance:</string>
-
+    <string name="bidder">Bidder:</string>
+    <string name="amount_staked">Current Bid:</string>
+    <string name="scan_crypto">Crypto Scan</string>
+    <string name="scan_standard">Standard Scan</string>
     <string name="requester_url">Requester</string>
     <string name="dialog_title_sign_message">Sign Message</string>
     <string name="dialog_title_sign_typed_message">Sign Typed Message</string>
@@ -378,7 +379,7 @@
     <string name="check_feemaster">Checking for gas free service</string>
     <string name="erc20_details">ERC20 Details</string>
     <string name="title_send_activity">Send</string>
-    <string name="title_buy_upc_activity" translatable="false">Buy UPC</string>
+    <string name="title_buy_upc_activity" translatable="false">Bid on UPC</string>
     <string name="available">Available</string>
     <string name="usd_label">US$</string>
     <string name="recent_transactions">Recent Transactions</string>

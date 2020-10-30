@@ -4,26 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_status_incomplete">
+    android:background="@drawable/background_bottom_border">
 
     <include layout="@layout/layout_url_bar_full" />
 
+
     <Button
-        android:id="@+id/scan_upc"
+        android:id="@+id/scan_upc_standard"
         style="@android:style/Widget.Material.Light.Button.Toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/address_bar"
-        android:background="#AEEA00"
-        android:text="@string/scan_upc"
-        tools:text="@string/scan_upc" />
+        android:background="#C1AD0202"
+        android:text="@string/scan_standard"
+        tools:text="@string/scan_standard" />
+    <Button
+        android:id="@+id/scan_upc_crypto"
+        style="@android:style/Widget.Material.Light.Button.Toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address_bar"
+        android:layout_toRightOf="@id/scan_upc_standard"
+        android:background="#C11A97EA"
+        android:text="@string/scan_crypto"
+        android:layout_marginLeft="5dp"
+        tools:text="@string/scan_crypto" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_below="@id/scan_upc"
+        android:layout_below="@id/scan_upc_crypto"
         android:indeterminate="false"
         android:progressDrawable="@drawable/background_horizontal_progress" />
 

@@ -186,7 +186,8 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
     private Toolbar toolbar;
     private ImageView back;
     private ImageView next;
-    private Button scanUpc;
+    private Button scanUpcStandard;
+    private Button scanUpcCrypto;
 
     private ImageView clear;
     private ImageView refresh;
@@ -520,8 +521,13 @@ public class DappBrowserFragment extends Fragment implements OnSignTransactionLi
             clearAddressBar();
         });
 
-        scanUpc = view.findViewById(R.id.scan_upc);
-        scanUpc.setOnClickListener(v -> {
+        scanUpcCrypto = view.findViewById(R.id.scan_upc_crypto);
+        scanUpcCrypto.setOnClickListener(v -> {
+            viewModel.startUpcScan(getActivity());
+        });
+
+        scanUpcStandard = view.findViewById(R.id.scan_upc_standard);
+        scanUpcStandard.setOnClickListener(v -> {
             viewModel.startUpcScan(getActivity());
         });
 

@@ -121,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/font_light"
-                        android:textColor="@color/blueberry"
+                        android:textColor="#25383C"
                         android:text="@string/raw_upc"
                         android:textStyle="bold|italic"
                         android:textSize="20sp" />
@@ -153,8 +153,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/font_light"
-                        android:textColor="@color/blueberry"
-                        android:text="@string/lease_holder"
+                        android:textColor="#C91380"
+                        android:text="@string/bidder"
                         android:textStyle="bold|italic"
                         android:textSize="20sp" />
 

@@ -228,7 +228,8 @@ public class HomeActivity extends BaseNavigationActivity implements View.OnClick
         if (getIntent().getBooleanExtra(C.Key.FROM_SETTINGS, false)) {
             showPage(SETTINGS);
         } else {
-            showPage(WALLET);
+            //jonger change default startup page here
+            showPage(DAPP_BROWSER);
         }
 
         if (CustomViewSettings.hideDappBrowser())
